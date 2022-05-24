@@ -6,11 +6,11 @@ known_upcs = []
 
 
 def generate_upc():
-    i = 0
+    digit = 0
     number = 0
-    while i < 12:
+    while digit < 12:
         number = number * 10 + int(rand.random() * 10)
-        i += 1
+        digit += 1
     return number
 
 
@@ -29,13 +29,17 @@ def is_in(obj, arr):
         return 0
 
 
-def generate_name(length):
-    name = ""
-    i = 0
-    while i < length:
-        name += chr(int(rand.random() * 94 + 32))
-        i += 1
-    return name
+def generate_name(name_len):
+    rand_name = ""
+    cur_len = 0
+    while cur_len < name_len:
+        letter = rand.random() * 25
+        if rand.random() <= .5:
+            rand_name += chr(int(letter + 65))
+        else:
+            rand_name += chr(int(letter + 97))
+        cur_len += 1
+    return rand_name
 
 
 def generate_sale(max_sales):
@@ -68,6 +72,12 @@ def generate_sales():
     return sales
 
 
+def generate_size():
+    oz = [' fl oz', ' oz']
+    str_size = str(rand.randrange(1, 100)) + oz[int(rand.random() * 2)]
+    return str_size
+
+
 with open("products.txt", 'a') as products:
     i = 0
     while i < 25000:
@@ -80,12 +90,14 @@ with open("products.txt", 'a') as products:
         salesfloor_count = int(rand.random() * 200)
         name = generate_name(int(rand.random() * 95 + 5))
         case_size = int(rand.randrange(3, 200))
+        size = generate_size()
 
-        products.write("UPC: {}\nName: {}\nPrice: ${}\nSales Floor Count: {}\n"
-                       "Lifetime Sales:{}\nQ1 Sales: {}\nQ2 Sales: {}\nQ3 Sales: {}\nQ4 Sales: {}\nMonthly Sales: {}\n"
-                       "Daily Sales: {}\nColor: {}\nCase Size: {}\nCommodity: {}\n\n".format(
-                        upc, name, price, salesfloor_count, fake_sales[0], fake_sales[1], fake_sales[2], fake_sales[3],
-                        fake_sales[4], fake_sales[5], fake_sales[6], assign_color(), case_size, assign_commodity()))
+        # File Line Order:
+        # UPC, Name, Price, Sales Floor Count, Lifetime Sales, Q1 Sales, Q2 Sales, Q3 Sales, Q4 Sales,
+        # Monthly Sales, Daily Sales, Size, Color, Case Size, Commodity
+        products.write("{}  {}  {}  {}  {}  {}  {}  {}  {}  {}  {}  {}  {}  {}  {}\n".format(
+            upc, name, price, salesfloor_count,  fake_sales[0], fake_sales[1], fake_sales[2], fake_sales[3],
+            fake_sales[4], fake_sales[5], fake_sales[6], size, assign_color(), case_size, assign_commodity()))
         i += 1
         if i % 10000 == 0:
             print(i)
