@@ -1,24 +1,48 @@
-import mysql.connector
-
-cnx = mysql.connector.connect([REDACTED DATA])
-cursor = cnx.cursor()
-
-
-def insert_data(arr):
-    cursor.execute("INSERT INTO product "
-                   "(upc, name, price, salefloor_count, amount_sold_lifetime, amount_sold_Q1, amount_sold_Q1,"
-                   " amount_sold_Q2, amount_sold_Q3, amount_sold_Q4, amount_sold_monthly, amount_sold_daily, size,"
-                   " color, case_size, commodity) "
-                   "VALUES (%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s)", arr)
+def __format_data__(arr):
+    data_str = ""
+    i = 0
+    while i < len(arr) - 1:
+        data_str += arr[i] + ", "
+        i += 1
+    return data_str + arr[i]
 
 
-with open("products.txt", 'r') as products:
-    line = products.readline()
-    while line:
-        insert_data(line.split())
+def __format_columns__(columns):
+    string = ""
+    stop = len(columns) - 1
+    for i in range(0, stop):
+        string += str(columns[i]) + ", "
+    return string + columns[stop]
+
+
+def __add_sets__(columns, data):
+    sets = ""
+    stop = len(columns) - 1
+    for i in range(0, stop):
+        sets += "{} = {}".format(columns[i], str(data[i]))
+    return sets
+
+
+def insert_data(cursor, table, columns, values):
+    command = "INSERT INTO " + table + \
+              " (" + __format_columns__(columns) + ")" + \
+              " VALUES ( " + __format_data__(values) + ")"
+    cursor.execute(command)
+
+
+def insert_data_from_file(cursor, cnx, table, file, columns):
+    with open(file, 'r') as products:
         line = products.readline()
+        while line:
+            insert_data(cursor, table, columns, line.split("  "))
+            line = products.readline()
+    cnx.commit()
 
-cnx.commit()
 
-cursor.close()
-cnx.close()
+def update_table(cursor, cnx, table, columns, data, start, stop):
+    for i in range(start, stop + 1):
+        command = "UPDATE " + table + \
+            " SET " + __add_sets__(columns, data[i-1]) + \
+            " WHERE " + table + "_id = " + str(i)
+        cursor.execute(command)
+    cnx.commit()
