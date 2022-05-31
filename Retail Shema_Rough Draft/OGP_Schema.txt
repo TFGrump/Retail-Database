@@ -1,0 +1,34 @@
+ORDER:
+int order_id (primary key)
+varchar(4) OSN
+int account_id (foreign key)
+datetime(0) pickup_time
+tinyint is_GMD
+tinyint is_express
+tinyint amount_ambient (unsigned)
+tinyint amount_produce (unsigned)
+tinyint amount_general (unsigned)
+tinyint amount_oversized (unsigned)
+tinyint amount_chilled (unsigned)
+tinyint amount_MTO (unsigned)
+tinyint amount_frozen (unsigned)
+tinyint amount_unknown (unsigned)
+varchar(20) status
+
+ORDEREDITEMS:
+int item_id (primary key)
+int product_id (foreign key)
+tinyint amount_ordered (unsigned)
+tinyint amount_picked (unsigned)
+
+SUBSTITUTIONS:
+int subsititution_id (primary key)
+int item_id (foreign key)
+int product_id (foreign key)
+tinyint amount_picked (unsigned)
+
+TOTES:
+int tote_id (primary key)
+varchar(6) tote_number
+int order_id (foreign key)
+datetime(0) date_created
