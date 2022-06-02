@@ -2,7 +2,7 @@ import mysql.connector
 import inserting_data as indata
 import random_product_generator as rpg
 
-cnx = mysql.connector.connect(user='TJ', password='Rub!kSCub3SQL', database='retail')
+cnx = mysql.connector.connect('[REDACTED]')
 cursor = cnx.cursor()
 
 columns = ['upc', 'name', 'price', 'salesfloor_count', 'amount_sold_lifetime', 'amount_sold_Q1',
