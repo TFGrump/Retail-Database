@@ -19,8 +19,8 @@ def __add_sets__(columns, data):
     sets = ""
     stop = len(columns) - 1
     for i in range(0, stop):
-        sets += "{} = {}".format(columns[i], str(data[i]))
-    return sets
+        sets += "{} = {}, ".format(columns[i], str(data[i]))
+    return sets + "{} = {}".format(columns[stop], str(data[stop]))
 
 
 def insert_data(cursor, table, columns, values):
@@ -42,7 +42,7 @@ def insert_data_from_file(cursor, cnx, table, file, columns):
 def update_table(cursor, cnx, table, columns, data, start, stop):
     for i in range(start, stop + 1):
         command = "UPDATE " + table + \
-            " SET " + __add_sets__(columns, data[i-1]) + \
+            " SET " + __add_sets__(columns, data[i-start]) + \
             " WHERE " + table + "_id = " + str(i)
         cursor.execute(command)
     cnx.commit()
