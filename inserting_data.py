@@ -15,7 +15,7 @@ def __format_columns__(columns):
     return string + columns[stop]
 
 
-def __add_sets__(columns, data):
+def __format_sets__(columns, data):
     sets = ""
     stop = len(columns) - 1
     for i in range(0, stop):
@@ -42,7 +42,7 @@ def insert_data_from_file(cursor, cnx, table, file, columns):
 def update_table(cursor, cnx, table, columns, data, start, stop):
     for i in range(start, stop + 1):
         command = "UPDATE " + table + \
-            " SET " + __add_sets__(columns, data[i-start]) + \
+            " SET " + __format_sets__(columns, data[i-start]) + \
             " WHERE " + table + "_id = " + str(i)
         cursor.execute(command)
     cnx.commit()
