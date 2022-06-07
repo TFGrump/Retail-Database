@@ -25,6 +25,7 @@ columns = ['upc', 'name', 'price', 'salesfloor_count', 'amount_sold_lifetime', '
 # indata.insert_data_from_file(cursor, cnx, "product", "products.txt", columns)
 # update_dimensions()
 
+rag.assign_aisles(cnx, cursor)
 
 cursor.close()
 cnx.close()
