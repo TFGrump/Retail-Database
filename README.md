@@ -8,5 +8,5 @@ A database project so I can practice using SQL.
 - [x] Write INSERT statements
 - [x] Write UPDATE statements
 - [x] Write basic SELECT statements
-- [ ] Write complex SELECT statements (JOINS and subqueries)
+- [x] Write complex SELECT statements (JOINS and subqueries)
 - [x] Interact with my database with Python
